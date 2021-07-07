@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  AutoScalingGroupName:
+    Type: String
+Resources:
+  EC2HighUtilization:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmDescription: 'EC2 High Utilization: CPU, memory, or network'
+      Metrics:
+      - Id: summary
+        Label: EC2 Utilization
+        Expression: IF(cpu > 50, 1, 0) OR IF(memory > 75, 1, 0) OR IF(network > 80, 1, 0)
+        ReturnData: true
+      - Id: cpu
+        MetricStat:
+          Metric:
+            Namespace: AWS/EC2
+            MetricName: CPUUtilization
+            Dimensions:
+            - Name: AutoScalingGroupName
+              Value: !Ref AutoScalingGroupName
+          Stat: Maximum
+          Period: 60
+        ReturnData: false
+      - Id: memory
+        MetricStat:
+          Metric:
+            Namespace: CWAgent
+            MetricName: mem_used_percent
+            Dimensions:
+            - Name: AutoScalingGroupName
+              Value: !Ref AutoScalingGroupName
+          Stat: Maximum
+          Period: 60
+        ReturnData: false
+      - Id: network
+        Label: Network Utilization
+        Expression: "((network_in+network_out)/300/1000/1000/1000*8)/0.75*100"
+        ReturnData: false
+      - Id: network_in
+        MetricStat:
+          Metric:
+            Namespace: AWS/EC2
+            MetricName: NetworkIn
+            Dimensions:
+            - Name: AutoScalingGroupName
+              Value: !Ref AutoScalingGroupName
+          Stat: Sum
+          Period: 60
+        ReturnData: false
+      - Id: network_out
+        MetricStat:
+          Metric:
+            Namespace: AWS/EC2
+            MetricName: NetworkOut
+            Dimensions:
+            - Name: AutoScalingGroupName
+              Value: !Ref AutoScalingGroupName
+          Stat: Sum
+          Period: 60
+        ReturnData: false
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: '1'
