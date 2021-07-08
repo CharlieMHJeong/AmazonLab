@@ -1,5 +1,5 @@
 Description:  VPCStack
-  AWSProject2 GoGreen Insurance - MyounghwanJeong D1 AdvDiploma TAFENSW 2021
+  AWSProject2 GoGreen Insurance - MyounghwanJeong
   This template deploys a VPC 10.0.0.0/16, 
   with a pair of public and 3 pairs of private subnets spread across two Availability Zones
   an internet gateway, with a default route on the public subnets
