@@ -1,8 +1,8 @@
 Description:  VPCStack
   AWSProject2 GoGreen Insurance - MyounghwanJeong
   This template deploys a VPC 10.0.0.0/16, 
-  with a pair of public and 3 pairs of private subnets spread across two Availability Zones
-  an internet gateway, with a default route on the public subnets
+  with a pair of public and 3 pairs of private subnets spread across two Availability Zones,
+  an internet gateway with a default route on the public subnets,
   a pair of NAT gateways (one in each AZ),
   default routes for them in the private subnets.
 
